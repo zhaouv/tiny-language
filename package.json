@@ -1,0 +1,26 @@
+{
+    "name": "tiny-language",
+    "displayName": "tiny-language",
+    "description": "tiny-language support for Visual Studio Code",
+    "version": "0.0.1",
+    "publisher": "zhaouv",
+    "engines": {
+        "vscode": "^1.18.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "tinylanguage",
+            "aliases": ["tiny-language", "tinylanguage"],
+            "extensions": [".tl"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "tinylanguage",
+            "scopeName": "source.tinylanguage",
+            "path": "./syntaxes/tinylanguage.tmLanguage.json"
+        }]
+    }
+}

@@ -1,0 +1,246 @@
+// unfinished
+// actually need not to translate the hole grammar file to tmlanguage.json
+// the real working tmlanguage.json does less things
+
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "tiny-language",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#statements"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.block.tinylanguage",
+					"begin": "\/\\*",
+					"end": "\\*\/"
+				},
+				{
+					"name": "comment.line.double-slash.tinylanguage",
+					"match": "\/\/.*"
+				}
+			]
+		},
+		"statements": {
+			"patterns": [
+				{
+					"include": "#function-define"
+				},
+				{
+					"include": "#assignment"
+				},
+				{
+					"include": "#ifstatement"
+				},
+				{
+					"include": "#keywords"
+				},
+				{
+					"include": "#builtin-functions"
+				},
+				{
+					"include": "#expression"
+				},
+				{
+					"match": ";"
+				}
+			]
+		},
+		"expression": {
+			"patterns": [
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#constants"
+				},
+				{
+					"include": "#numeric"
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#operators"
+				},
+				{
+					"include": "#indexes"
+				},
+				{
+					"begin": "\\(",
+					"end": "\\)",
+					"patterns": [
+						{
+							"include": "#expression"
+						}
+					]
+				},
+				{
+					"include": "#function-call"
+				},
+				{
+					"match": "\\b([a-zA-Z_][a-zA-Z_0-9]*)\\b"
+				},
+				{
+					"match": ","
+				}
+			]
+		},
+		"operators": {
+			"name": "keyword.operator.symbols.tinylanguage",
+			"match": "(?<=\\s)(-|!|\\*|/|%|\\+|>=|<=|>|<|==|!=|&&|\\|\\||\\?|:|in)(?=\\s)"
+		},
+		"function-define": {
+			"name": "meta.function.tinylanguage",
+			"begin": "\\b(def)\\s+([a-zA-Z_][a-zA-Z_0-9]*)\\b",
+			"beginCaptures": {
+				"1": {
+					"name": "storage.type.function.tinylanguage"
+				},
+				"2": {
+					"name": "entity.name.function.tinylanguage"
+				}
+			},
+			"end": "\\b(end)\\b",
+			"endCaptures": {
+				"1": {
+					"name": "keyword.control.end.function.tinylanguage"
+				}
+			},
+			"patterns": [
+				{
+					"name": "meta.arguments.function.tinylanguage",
+					"begin": "\\b\\(\\b",
+					"end": "\\b\\)\\b",
+					"patterns": [
+						{
+							"name": "variable.parameter.input.tinylanguage",
+							"match": "[a-zA-Z_][a-zA-Z_0-9]*"
+						}
+					]
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#statements"
+				}
+			]
+		},
+		"assignment": {
+			"begin": "\\b[a-zA-Z_][a-zA-Z_0-9]*",
+			"end": ";",
+			"patterns": [
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#indexes"
+				},
+				{
+					"match": "="
+				},
+				{
+					"include": "expression"
+				}
+			]
+		},
+		"ifstatement":{
+
+		},
+		"indexes": {
+			"patterns": [
+				{
+					"begin": "[",
+					"end": "]",
+					"patterns": [
+						{
+							"include": "expression"
+						}
+					]
+				}
+			]
+		},
+		"constants": {
+			"name": "constant.language.tinylanguage",
+			"match": "\\b(null|true|false)\\b"
+		},
+		"numeric": {
+			"name": "constant.numeric.tinylanguage",
+			"match": "\\b\\d+(\\.\\d*)?\\b"
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.tinylanguage",
+					"match": "\\b(if|else|for|while|return|to)\\b"
+				}
+			]
+		},
+		"builtin-functions": {
+			"patterns": [
+				{
+					"name": "support.function.builtin.tinylanguage",
+					"match": "\\b(println|print|input|assert|size)\\b"
+				}
+			]
+		},
+		"function-call": {
+			"name": "meta.function-call.tinylanguage",
+			"begin": "\\b([a-zA-Z_][a-zA-Z_0-9]*)\\s*(\\()\\b",
+			"beginCaptures": {
+				"1": {
+					"name": "entity.name.function.tinylanguage"
+				}
+			},
+			"end": "\\b(\\))\\b",
+			"endCaptures": {
+				"1": {
+					"name": "punctuation.definition.arguments.end.tinylanguage"
+				}
+			}
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.tinylanguage",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.tinylanguage",
+							"match": "\\\\[rn]"
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single.tinylanguage",
+					"begin": "'",
+					"end": "'",
+					"patterns": [
+						{
+							"name": "constant.character.escape.tinylanguage",
+							"match": "\\\\[rn]"
+						}
+					]
+				}
+			]
+		},
+		"end-statement": {
+			"begin": "\\b(do)\\b",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.control.tinylanguage"
+				}
+			},
+			"end": "\\b(end)\\b"
+		}
+	},
+	"scopeName": "source.tinylanguage"
+}
